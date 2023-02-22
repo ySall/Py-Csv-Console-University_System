@@ -11,7 +11,6 @@ class Teacher:
         self.assigncoure_file = "data/AssignCourse.csv"
         self.check = Check(self.file_name)
         self.check5 = Check(self.assigncoure_file)
-        self.teacher_list = self.check.ReadFile()
     
     def addTeacher(self):
         id = input("Enter Teacher ID: ")
@@ -60,24 +59,26 @@ class Teacher:
         while not self.check.CheckID(id):
             print("Teacher ID does not exist in file")
             id = input("Enter Teacher ID: ")
-        for teach in self.teacher_list:
-            if id == teach[0]:
-                display = PrettyTable(["ID", "Name", "Gender", "Date of Birth", "Phone Number", "Address"])
-                display.add_row(teach)
-                print(display)
-                return
+        with open(self.file_name, "r") as myFile:
+            teacher_list = [line.strip().split(",") for line in myFile]
+            for teacher in teacher_list:
+                if id == teacher[0]:
+                    display = PrettyTable(["ID", "Name", "Gender", "Date of Birth", "Phone Number", "Address"])
+                    display.add_row(teacher)
+                    print(display)
+                    return
                 
     def updatingTeacher(self):
-        self.id = input("Enter Teacher ID: ")
-        while not self.check.CheckID(self.id):
+        id = input("Enter Teacher ID: ")
+        while not self.check.CheckID(id):
             print("Teacher ID does not exist in file, Try againt...!")
-            self.id = input("Enter Teacher ID: ")
+            id = input("Enter Teacher ID: ")
         with open(self.file_name, "r") as myFile:
-            self.teacher_list = [line.strip().split(",") for line in myFile]
+            teacher_list = [line.strip().split(",") for line in myFile]
         with open(self.file_name, "w") as myFile:
-            for self.teacher in self.teacher_list:
-                if self.id != self.teacher[0]:
-                    myFile.write(",".join(self.teacher) + "\n")
+            for teacher in teacher_list:
+                if id != teacher[0]:
+                    myFile.write(",".join(teacher) + "\n")
                 else:
                     isUpdating = True
                     while isUpdating:
@@ -86,51 +87,51 @@ class Teacher:
                         print("[3]. Update Date of Birth")
                         print("[4]. Update Phone Number")
                         print("[5]. Update Address")
-                        print("[6]. Exit")
+                        print("[6]. Save")
                         choice = input("Enter Your Choice: ")
                         if choice == "1":
-                            self.teacher[1] = input("Enter Teacher Name: ").title()
+                            teacher[1] = input("Enter Teacher Name: ").title()
                         elif choice == "2":
-                            self.gender = input("Enter Teacher Gender[M/F]: ").upper()
-                            while self.gender not in ["M", "F"]:
+                            gender = input("Enter Teacher Gender[M/F]: ").upper()
+                            while gender not in ["M", "F"]:
                                 print("Gender must be M or F")
-                                self.gender = input("Enter Student Gender[M/F]: ").upper()
-                            if self.gender == "M":
-                                self.teacher[2] == "Male"
+                                gender = input("Enter Student Gender[M/F]: ").upper()
+                            if gender == "M":
+                                teacher[2] == "Male"
                             else:
-                                self.teacher[2] == "Female"
+                                teacher[2] == "Female"
                         elif choice == "3":
                             print("Date of Birth")
                             
-                            self.day = input("Enter Day of Birth: ")
-                            while int(self.day) not in range(1, 32):
+                            day = input("Enter Day of Birth: ")
+                            while int(day) not in range(1, 32):
                                 print("Day must be between 1 and 31")
-                                self.day = input("Enter Day of Birth: ")
+                                day = input("Enter Day of Birth: ")
                             
-                            self.month = input("Enter Month of Birth: ")
-                            while int(self.month) not in range(1, 13):
+                            month = input("Enter Month of Birth: ")
+                            while int(month) not in range(1, 13):
                                 print("Month must be between 1 and 12")
-                                self.month = input("Enter Month of Birth: ")
+                                month = input("Enter Month of Birth: ")
                             
-                            self.year = input("Enter Year of Birth: ")
-                            self.datetime_object = datetime.strptime(self.month, "%m")
-                            self.month_name = self.datetime_object.strftime("%b")
-                            self.teacher[3] = f"{int(self.day):02d}-{self.month_name.upper()}-{self.year}"
+                            year = input("Enter Year of Birth: ")
+                            datetime_object = datetime.strptime(month, "%m")
+                            month_name = datetime_object.strftime("%b")
+                            teacher[3] = f"{int(day):02d}-{month_name.upper()}-{year}"
                         elif choice == "4":
-                            self.contact = input("Enter Teacher Contact Number: ")
-                            while not self.contact.isnumeric():
+                            contact = input("Enter Teacher Contact Number: ")
+                            while not contact.isnumeric():
                                 print("Contact Number Must Be Numberic: ")
-                                self.contact = input("Enter Teacher Contact Number: ")
-                            self.contact = self.contact[:3] + "-" + self.contact[3:6] + "-" + self.contact[6:]
+                                contact = input("Enter Teacher Contact Number: ")
+                            contact = contact[:3] + "-" + contact[3:6] + "-" + contact[6:]
                         elif choice == "5":
-                            self.address = input("Enter New Teacher Address: ")
+                            address = input("Enter New Teacher Address: ")
                         elif choice == "6":
                             print("Bye Bye!")
                             isUpdating = False
                         else:
                             print("Invalid Choice")
                         print("Updated Student Successfully")
-                    myFile.write(",".join(self.teacher) + "\n")
+                    myFile.write(",".join(teacher) + "\n")
     
     def displayTeacher(self):
         with open(self.file_name, "r") as myFile:
@@ -160,7 +161,6 @@ class Teacher:
                     myAssignCourseFile.write(",".join(self.teacher) + "\n")
         print("Teacher Deleted Successfully")
 
-    
     def teacherMenu(self):
         self.check.CreateFile()
         isWorking = True

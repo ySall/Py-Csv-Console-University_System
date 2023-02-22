@@ -3,7 +3,7 @@ from prettytable import PrettyTable
 
 class Manage_course:
   def __init__(self):
-    self.file = "Course.csv"
+    self.file = "data/Course.csv"
     self.check = Check(self.file)
         
   def addCourse(self):

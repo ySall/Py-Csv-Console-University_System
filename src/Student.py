@@ -5,7 +5,7 @@ from src.Decoration import *
 
 class Student():
     def __init__(self):
-        self.file = "Student.csv"
+        self.file = "data/Student.csv"
         self.check = Check(self.file)
         
     def AddStudent(self):

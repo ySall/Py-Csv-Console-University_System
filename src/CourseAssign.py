@@ -6,9 +6,9 @@ import csv
 class AssignCourses:
     
     def __init__(self):
-        self.course_file = "Course.csv"
-        self.teacher_file = "Teacher.csv"
-        self.assigncourse_file = "AssignCourseToTeacher.csv"
+        self.course_file = "data/Course.csv"
+        self.teacher_file = "data/Teacher.csv"
+        self.assigncourse_file = "data/AssignCourse.csv"
         self.checkTeacher = Check(self.teacher_file)
         self.checkCourse = Check(self.course_file) 
         
@@ -18,7 +18,7 @@ class AssignCourses:
             print("Teacher does not exist")
             self.teacher_id = input("Enter Teacher ID: ")
         with open(self.teacher_file, "r") as myTeacherFile:
-            self.teacher_list1 = csv.reader(myTeacherFile)
+            self.teacher_list1 = [line.strip().split(",") for line in myTeacherFile]
             for self.teacher in self.teacher_list1:
                 if self.teacher[0] == self.teacher_id:
                     self.teacher_name = self.teacher[1]
@@ -44,6 +44,8 @@ class AssignCourses:
             for self.assigncourse in self.assigncourse_list:
                 self.myTable.add_row(self.assigncourse)
             print(self.myTable)
+    
+    
 
     def romoveCourseFromTeacher(self):
         self.teacher_id = input("Enter Teacher ID: ")
@@ -61,7 +63,6 @@ class AssignCourses:
                 if self.teacher[0] != self.teacher_id:
                     myAssignCourseFile.write(",".join(self.teacher) + "\n")
         print("Course removed from teacher")
-    
     
     def menu(self):
         isWorking = True
@@ -88,4 +89,3 @@ class AssignCourses:
                 case _:
                     print("Invalid choice, Try again...!")
                     clearScreen()
-                
