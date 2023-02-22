@@ -11,10 +11,6 @@ class Check():
         if not file.exists ():
             open(self.file, "x").close()
 
-    def ReadFile(self):
-        with open(self.file, "r") as file:
-            return csv.reader(file)
-
     def CheckID(self, id):
         with open(self.file, "r") as f:
             ID_list = [line.strip().split(",") for line in f]
